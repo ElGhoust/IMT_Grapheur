@@ -23,7 +23,7 @@ typedef enum
 typedef enum
 {
     ERR1,ERR2,ERR3,etc // /!\ Définir les différents type d'erreurs
-}
+} typeerreur;
 
 typedef union
 {
@@ -31,7 +31,7 @@ typedef union
     typefonction fonction;
     typeoperateur operateur;
     typeerreur erreur;
-} typevaleur
+} typevaleur;
 
 typedef struct
 {

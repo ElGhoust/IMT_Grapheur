@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1514144174 source:a:\files\projets\imt_grapheur\main.c
+	<stdio.h>
+	<stdlib.h>
+
