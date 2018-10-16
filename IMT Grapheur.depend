@@ -3,3 +3,19 @@
 	<stdio.h>
 	<stdlib.h>
 
+1539717860 source:d:\documents\codeblocks projects\calculatrice\analyse_lexicale.c
+
+1539717860 source:d:\documents\codeblocks projects\calculatrice\analyse_syntaxique.c
+
+1539717860 source:d:\documents\codeblocks projects\calculatrice\evaluateur.c
+
+1539718310 source:d:\documents\codeblocks projects\calculatrice\graphics.c
+	"graphics.h"
+
+1539718610 d:\documents\codeblocks projects\calculatrice\graphics.h
+
+1539718341 source:d:\documents\codeblocks projects\calculatrice\main.c
+	<stdio.h>
+	<stdlib.h>
+	"graphics.h"
+

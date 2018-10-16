@@ -31,6 +31,23 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="analyse_lexicale.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="analyse_lexicale.h" />
+		<Unit filename="analyse_syntaxique.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="analyse_syntaxique.h" />
+		<Unit filename="evaluateur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="evaluateur.h" />
+		<Unit filename="graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="graphics.h" />
+		<Unit filename="jeton.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
