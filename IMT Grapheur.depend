@@ -19,3 +19,24 @@
 	<stdlib.h>
 	"graphics.h"
 
+1539702047 source:c:\users\ant92\desktop\github\imt_grapheur\analyse_syntaxique.c
+
+1539702047 source:c:\users\ant92\desktop\github\imt_grapheur\evaluateur.c
+
+1540201231 source:c:\users\ant92\desktop\github\imt_grapheur\analyse_lexicale.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"jeton.h"
+	"analyse_lexicale.h"
+
+1540197105 c:\users\ant92\desktop\github\imt_grapheur\jeton.h
+
+1540194933 c:\users\ant92\desktop\github\imt_grapheur\analyse_lexicale.h
+
+1540201393 source:c:\users\ant92\desktop\github\imt_grapheur\graphics.c
+	"graphics.h"
+	<stdio.h>
+
+1540201393 c:\users\ant92\desktop\github\imt_grapheur\graphics.h
+

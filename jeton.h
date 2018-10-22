@@ -1,10 +1,6 @@
 #ifndef JETON_H_INCLUDED
 #define JETON_H_INCLUDED
 
-
-
-#endif // JETON_H_INCLUDED
-
 typedef enum
 {
     REEL,OPERATEUR,FONCTION,ERREUR,FIN,PAR_OUV,PAR_FERM,VARIABLE,BAR_OUV,BAR_FERM,ASBOLU
@@ -46,3 +42,7 @@ typedef struct Node
     struct Node *pjeton_suiv;
 } Node;
 typedef Node *Arbre;
+
+#endif // JETON_H_INCLUDED
+
+
