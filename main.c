@@ -6,8 +6,7 @@
 
 int main()
 {
-//    char * entree = "(5+6-8)/8";
-    char * entree = "5+8";
+    char * entree = "(5+6-8)/2";
     analyseLexicale(entree);
     return 0;
 }

@@ -23,20 +23,27 @@
 
 1539702047 source:c:\users\ant92\desktop\github\imt_grapheur\evaluateur.c
 
-1540201231 source:c:\users\ant92\desktop\github\imt_grapheur\analyse_lexicale.c
+1540205163 source:c:\users\ant92\desktop\github\imt_grapheur\analyse_lexicale.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"jeton.h"
 	"analyse_lexicale.h"
 
-1540197105 c:\users\ant92\desktop\github\imt_grapheur\jeton.h
+1540204341 c:\users\ant92\desktop\github\imt_grapheur\jeton.h
 
-1540194933 c:\users\ant92\desktop\github\imt_grapheur\analyse_lexicale.h
+1540204770 c:\users\ant92\desktop\github\imt_grapheur\analyse_lexicale.h
+	"jeton.h"
 
 1540201393 source:c:\users\ant92\desktop\github\imt_grapheur\graphics.c
 	"graphics.h"
 	<stdio.h>
 
 1540201393 c:\users\ant92\desktop\github\imt_grapheur\graphics.h
+
+1540201851 source:c:\users\ant92\desktop\github\imt_grapheur\main.c
+	<stdio.h>
+	<stdlib.h>
+	"graphics.h"
+	"analyse_lexicale.h"
 

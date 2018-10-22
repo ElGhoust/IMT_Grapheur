@@ -5,14 +5,12 @@
 #include "analyse_lexicale.h"
 
 void analyseLexicale(char * input){
-    Arbre tab;
+    //Test si input ok
     if(input != NULL){
         int len = strlen(input);
         printf("longueur chaine : %d\n",len);
+        typejeton tab[len+1];
 
-        tab = (Arbre)malloc(sizeof(Node));
-        tab->pjeton_preced=NULL;
-        tab->pjeton_suiv=NULL;
 
         for(int i = 0; i<len; i++){
             typejeton * temp;
@@ -27,6 +25,8 @@ void analyseLexicale(char * input){
                 temp->valeur.reel=atof(&input[i]);
 
                 printf("BIM %f\n",temp->valeur.reel);
+
+                tab[i]=*temp;
             }
             else{
                 switch(input[i]){
@@ -59,14 +59,23 @@ void analyseLexicale(char * input){
                         break;
                 }
             }
+
             printf("\n");
         }
-
-
+        printf("\n----AFFICHAGE TABLEAU----\n");
+        for(int i=0; i< sizeof(tab)/sizeof(typejeton); i++){
+            printf("%d\n",i);
+            if(tab[i].valeur.reel!=0){
+                printf("%f\n",tab[i].valeur.reel);
+            }
+        }
     }
     else{
         printf("Chaine vide !");
     }
+
+
 }
+
 
 
