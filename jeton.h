@@ -1,10 +1,6 @@
 #ifndef JETON_H_INCLUDED
 #define JETON_H_INCLUDED
 
-
-
-#endif // JETON_H_INCLUDED
-
 typedef enum
 {
     REEL,OPERATEUR,FONCTION,ERREUR,FIN,PAR_OUV,PAR_FERM,VARIABLE,BAR_OUV,BAR_FERM,ASBOLU
@@ -22,7 +18,7 @@ typedef enum
 
 typedef enum
 {
-    ERR1,ERR2,ERR3,etc // /!\ Définir les différents type d'erreurs
+    ERR1,ERR2,ERR3,etc // /!\ Dï¿½finir les diffï¿½rents type d'erreurs
 } typeerreur;
 
 typedef union
@@ -42,7 +38,9 @@ typedef struct
 typedef struct Node
 {
     typejeton jeton;
-    struct Node *pjeton_preced;
-    struct Node *pjeton_suiv;
+    struct Node *fg;
+    struct Node *fd;
 } Node;
 typedef Node *Arbre;
+
+#endif // JETON_H_INCLUDED
