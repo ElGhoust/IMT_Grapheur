@@ -32,8 +32,6 @@ int main()
     j4[0] = j1;
     j4[1] = j3;
     j4[2] = j2;
-    j4[3] = j3;
-    j4[4] = j1;
     j4[5] = j5;
 
     afficher_arbre(analyse_syntaxique(j4));
