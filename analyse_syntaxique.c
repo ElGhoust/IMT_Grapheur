@@ -37,25 +37,27 @@ ListeEntite priorite(ListeEntite liste, int priorite){
     return res;
 }
 
-Arbre analyse_syntaxique(typejeton * j){
+Arbre analyse_syntaxique(ListeEntite liste){
     Arbre a = NULL;
 
-    if(j != NULL) {
-        int i1 = priorite(j,1), i2 = priorite(j,1), i3 = priorite(j,1), i4 = priorite(j,1), i5 = priorite(j,5);
-        if(i1 != -1) {
-            typejeton mem = j[i1];
-            j[i1].lexem = FIN;
+    if(liste != NULL) {
+        ListeEntite e1 = priorite(liste,1), e2 = priorite(liste,1), e3 = priorite(liste,1), e4 = priorite(liste,1), e5 = priorite(liste,5);
+        if(e1 != NULL) {
+            typejeton mem = e1->jeton;
+            e1->jeton.lexem = FIN;
             a = (Arbre)malloc(sizeof(struct Node));
             a->jeton.lexem = OPERATEUR;
             a->jeton.valeur = mem.valeur;
-            a->fg = analyse_syntaxique(j);
-            a->fd = analyse_syntaxique(&j[i1 + 1]);
-        } else if(i5 != -1) {
+            a->fg = analyse_syntaxique(liste);
+            a->fd = analyse_syntaxique(e1->suiv);
+            e1->jeton.lexem = OPERATEUR;
+            e1->jeton.valeur = mem.valeur;
+        } else if(e5 != NULL) {
             a = (Arbre)malloc(sizeof(struct Node));
             a->fg = NULL;
             a->fd = NULL;
             a->jeton.lexem = REEL;
-            a->jeton.valeur = j[i5].valeur;
+            a->jeton.valeur = e5->jeton.valeur;
         }
 
     }
@@ -72,18 +74,5 @@ void afficher_arbre(Arbre a){
             printf("%f\n", a->jeton.valeur.reel);
         }
         afficher_arbre(a->fd);
-    }
-}
-
-void afficher_tab_jeton(typejeton * j){
-    int i = 0;
-
-    while(j[i].lexem != FIN){
-        if(j[i].lexem == REEL)
-            printf("-%f\n",j[i].valeur.reel);
-        else
-            printf("-+\n");
-
-        i++;
     }
 }

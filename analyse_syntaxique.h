@@ -5,7 +5,7 @@
 #include "analyse_lexicale.h"
 
 ListeEntite priorite(ListeEntite liste, int priorite);
-Arbre analyse_syntaxique(typejeton * j);
+Arbre analyse_syntaxique(ListeEntite);
 void afficher_arbre(Arbre a);
 void afficher_tab_jeton(typejeton * j);
 
