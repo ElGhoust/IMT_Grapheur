@@ -10,7 +10,3 @@ int main()
     analyseLexicale(entree);
     return 0;
 }
-
-void classer(char * entree){
-
-}
