@@ -43,13 +43,6 @@ typedef struct Node
 } Node;
 typedef Node *Arbre;
 
-typedef struct Entite
-{
-    typejeton jeton;
-    struct Entite *pjeton_suiv;
-} Entite;
-typedef Entite *LinkedList;
-
 #endif // JETON_H_INCLUDED
 
 
