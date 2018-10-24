@@ -2,8 +2,9 @@
 #define ANALYSE_SYNTAXIQUE_H_INCLUDED
 
 #include "jeton.h"
+#include "analyse_lexicale.h"
 
-int priorite(typejeton * j, int priorite);
+ListeEntite priorite(ListeEntite liste, int priorite);
 Arbre analyse_syntaxique(typejeton * j);
 void afficher_arbre(Arbre a);
 void afficher_tab_jeton(typejeton * j);

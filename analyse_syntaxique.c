@@ -5,37 +5,33 @@
 #include "analyse_syntaxique.h"
 #include "jeton.h"
 
-int priorite(typejeton * j, int priorite){
-    int res = -1, i = 0;
+ListeEntite priorite(ListeEntite liste, int priorite){
+    int i = 0;
+    ListeEntite res = liste;
 
-    while(j[i].lexem != FIN){
+    while(res != NULL){
         switch(priorite){
             case 1:
-                if(j[i].lexem == OPERATEUR && (j[i].valeur.operateur == MOINS || j[i].valeur.operateur == PLUS))
-                    res = i;
-                break;
+                if(res->jeton.lexem == OPERATEUR && (res->jeton.valeur.operateur == MOINS || res->jeton.valeur.operateur == PLUS))
+                    break;
             case 2:
-                if(j[i].lexem == OPERATEUR && (j[i].valeur.operateur == FOIS || j[i].valeur.operateur == DIV))
-                    res = i;
-                break;
+                if(res->jeton.lexem == OPERATEUR && (res->jeton.valeur.operateur == FOIS || res->jeton.valeur.operateur == DIV))
+                    break;
             case 3:
-                if(j[i].lexem == FONCTION)
-                    res = i;
-                break;
+                if(res->jeton.lexem == FONCTION)
+                    break;
             case 4:
-                if(j[i].lexem == BAR_OUV)
-                    res = i;
-                break;
+                if(res->jeton.lexem == BAR_OUV)
+                    break;
             case 5:
-                if(j[i].lexem == REEL)
-                    res = i;
-                break;
+                if(res->jeton.lexem == REEL)
+                    break;
             default:
-                res = -1;
+                res = NULL;
                 break;
         }
 
-        i++;
+        res = res->suiv;
     }
 
     return res;
