@@ -6,7 +6,7 @@
 
 ListeEntite priorite(ListeEntite liste, int priorite);
 Arbre analyse_syntaxique(ListeEntite);
-void afficher_arbre(Arbre a);
-void afficher_tab_jeton(typejeton * j);
+void afficher_arbre(Arbre a, int space);
+void afficher_liste(ListeEntite liste);
 
 #endif // ANALYSE_SYNTAXIQUE_H_INCLUDED
