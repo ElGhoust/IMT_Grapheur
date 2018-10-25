@@ -157,6 +157,7 @@ Arbre analyse_syntaxique(ListeEntite liste) {
 
 	}
 	return a;
+    
 }
 
 
