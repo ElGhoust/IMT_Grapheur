@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <conio.h>
 
 #include "analyse_syntaxique.h"
 #include "jeton.h"
@@ -63,16 +64,20 @@ ListeEntite priorite(ListeEntite liste, int priorite) {
 }
 
 ListeEntite cleanup(ListeEntite l) {
-    ListeEntite start = l;
+    ListeEntite start = l, temp;
     return l;
 }
 
 Arbre findError(ListeEntite l) {
-    ListeEntite start = l;
+    ListeEntite start = l, temp;
     Arbre a = NULL;
+    int parentheses = 0, crochets = 0;
 
     if(start->jeton.lexem == OPERATEUR && start->jeton.valeur.operateur != MOINS) {
-
+        a = (Arbre)malloc(sizeof(struct Node));
+        a->jeton.lexem = ERREUR;
+        a->jeton.valeur.erreur = FORBIDDEN_STARTING_OPERATOR;
+        return a;
     }
 
     while(l != NULL && l->jeton.lexem != FIN) {
@@ -80,14 +85,71 @@ Arbre findError(ListeEntite l) {
         if(l->jeton.lexem == OPERATEUR && l->suiv->jeton.lexem == OPERATEUR) {
             a = (Arbre)malloc(sizeof(struct Node));
             a->jeton.lexem = ERREUR;
-            a->jeton.valeur.erreur = TOO_MANY_OPERATOR;
+            a->jeton.valeur.erreur = OPERATOR_CHAIN_NOT_ALLOWED;
             return a;
         }
+        else if (l->jeton.lexem == ABSOLU) {
+            a = (Arbre)malloc(sizeof(struct Node));
+            a->jeton.lexem = ERREUR;
+            a->jeton.valeur.erreur = ABSOLU_SHOULD_BE_A_FUNCTION;
+            return a;
+        }
+        else if(l->jeton.lexem == PAR_OUV) {
+            if(crochets > 0) {
+                temp = l;
+                while (temp != NULL && temp->jeton.lexem != FIN && temp->jeton.lexem != PAR_FERM) {
+                    if(temp->jeton.lexem == BAR_FERM) {
+                        a = (Arbre)malloc(sizeof(struct Node));
+                        a->jeton.lexem = ERREUR;
+                        a->jeton.valeur.erreur = MIXED_CROCHETS_AND_PARENTHESIS;
+                        return a;
+                    }
+                    temp = temp->suiv;
+                }
+            }
+            parentheses++;
+        }
+        else if(l->jeton.lexem == PAR_FERM) {
+            parentheses--;
+        }
+        else if(l->jeton.lexem == BAR_OUV) {
+            while (temp != NULL && temp->jeton.lexem != FIN && temp->jeton.lexem != BAR_FERM) {
+                if(temp->jeton.lexem == PAR_FERM) {
+                    a = (Arbre)malloc(sizeof(struct Node));
+                    a->jeton.lexem = ERREUR;
+                    a->jeton.valeur.erreur = MIXED_CROCHETS_AND_PARENTHESIS;
+                    return a;
+                }
+                temp = temp->suiv;
+            }
+            crochets++;
+        }
+        else if(l->jeton.lexem == PAR_FERM) {
+            crochets--;
+        }
         l = l->suiv;
+        _getch();
     }
+
+    if(parentheses != 0 || crochets != 0) {
+        a = (Arbre)malloc(sizeof(struct Node));
+        a->jeton.lexem = ERREUR;
+        a->jeton.valeur.erreur = ALL_PARENTHESIS_AND_CROCHETS_SHOULD_CLOSE;
+        return a;
+    }
+    return a;
 }
 
-Arbre analyse_syntaxique(ListeEntite liste) {
+Arbre analyse_syntaxique(ListeEntite l) {
+    Arbre a = findError(l);
+    if (a == NULL) {
+        l = cleanup(l);
+        a = parse_liste(l);
+    }
+    return a;
+}
+
+Arbre parse_liste(ListeEntite liste) {
 	Arbre a = NULL;
 
 	if (liste != NULL) {

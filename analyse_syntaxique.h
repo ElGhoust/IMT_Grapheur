@@ -7,7 +7,8 @@
 ListeEntite priorite(ListeEntite liste, int priorite);
 ListeEntite cleanup(ListeEntite l);
 Arbre findError(ListeEntite l);
-Arbre analyse_syntaxique(ListeEntite);
+Arbre parse_liste(ListeEntite liste);
+Arbre analyse_syntaxique(ListeEntite l);
 ListeEntite trouver_fermeture_parenthese(ListeEntite e);
 ListeEntite trouver_fermeture_crochet(ListeEntite e);
 void afficher_arbre(Arbre a, int space);
