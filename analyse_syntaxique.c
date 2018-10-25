@@ -7,19 +7,26 @@
 
 ListeEntite priorite(ListeEntite liste, int priorite) {
 	int i = 0;
-	int found = 0, parentheses = 0;
+	int found = 0, parentheses = 0, crochets = 0, pipe = 0;
 	ListeEntite res = liste;
 
 	while (res != NULL && res->jeton.lexem != FIN && !found) {
-		if (parentheses != 0) {
-			if (res->jeton.lexem == PAR_FERM)
+		if (parentheses != 0 || crochets != 0) {
+			if (res->jeton.lexem == PAR_FERM && parentheses != 0)
 				parentheses--;
 			else if (res->jeton.lexem == PAR_OUV)
 				parentheses++;
+            else if (res->jeton.lexem == BAR_FERM && crochets != 0)
+                crochets--;
+            else if (res->jeton.lexem == BAR_OUV)
+                crochets++;
+
 		}
 		else {
 			if (res->jeton.lexem == PAR_OUV)
 				parentheses = 1;
+            else if (res->jeton.lexem == BAR_OUV)
+                crochets = 1;
 
 			switch (priorite) {
 			case 1:
@@ -35,7 +42,7 @@ ListeEntite priorite(ListeEntite liste, int priorite) {
 					found = 1;
 				break;
 			case 4:
-				if (res->jeton.lexem == PAR_OUV)
+				if (res->jeton.lexem == PAR_OUV || res->jeton.lexem == BAR_OUV)
 					found = 1;
 				break;
 			case 5:
@@ -53,6 +60,31 @@ ListeEntite priorite(ListeEntite liste, int priorite) {
 	}
 
 	return res;
+}
+
+ListeEntite cleanup(ListeEntite l) {
+    ListeEntite start = l;
+    return l;
+}
+
+Arbre findError(ListeEntite l) {
+    ListeEntite start = l;
+    Arbre a = NULL;
+
+    if(start->jeton.lexem == OPERATEUR && start->jeton.valeur.operateur != MOINS) {
+
+    }
+
+    while(l != NULL && l->jeton.lexem != FIN) {
+        //Trop d'opérateur qui se suivent
+        if(l->jeton.lexem == OPERATEUR && l->suiv->jeton.lexem == OPERATEUR) {
+            a = (Arbre)malloc(sizeof(struct Node));
+            a->jeton.lexem = ERR;
+            a->jeton.valeur.erreur = TOO_MANY_OPERATOR;
+            return a;
+        }
+        l = l->suiv;
+    }
 }
 
 Arbre analyse_syntaxique(ListeEntite liste) {
@@ -96,13 +128,24 @@ Arbre analyse_syntaxique(ListeEntite liste) {
 			par_ferm->jeton = mem;
 		}
 		else if (e4 != NULL && e4->jeton.lexem != FIN) {
-			ListeEntite par_ouv = e4, par_ferm = trouver_fermeture_parenthese(par_ouv);
-			typejeton mem = par_ferm->jeton;
-			par_ferm->jeton.lexem = FIN;
+            if(e4->jeton.lexem == PAR_OUV) {
+                ListeEntite par_ouv = e4, par_ferm = trouver_fermeture_parenthese(par_ouv);
+                typejeton mem = par_ferm->jeton;
+                par_ferm->jeton.lexem = FIN;
 
-			a = analyse_syntaxique(par_ouv->suiv);
+                a = analyse_syntaxique(par_ouv->suiv);
 
-			par_ferm->jeton = mem;
+                par_ferm->jeton = mem;
+            }
+			else if (e4->jeton.lexem == BAR_OUV) {
+                ListeEntite bar_ouv = e4, bar_ferm = trouver_fermeture_crochet(bar_ouv);
+                typejeton mem = bar_ferm->jeton;
+                bar_ferm->jeton.lexem = FIN;
+
+                a = analyse_syntaxique(bar_ouv->suiv);
+
+                bar_ferm->jeton = mem;
+			}
 		}
 		else if (e5 != NULL && e5->jeton.lexem != FIN) {
 			a = (Arbre)malloc(sizeof(struct Node));
@@ -125,6 +168,23 @@ ListeEntite trouver_fermeture_parenthese(ListeEntite e) {
 		if (res->jeton.lexem == PAR_OUV)
 			i++;
 		else if (res->jeton.lexem == PAR_FERM) {
+			if (i == 0)
+				return res;
+			else
+				i--;
+		}
+		res = res->suiv;
+	}
+	return NULL;
+}
+
+ListeEntite trouver_fermeture_crochet(ListeEntite e) {
+    ListeEntite res = e->suiv;
+	int i = 0;
+	while (res != NULL && res->jeton.lexem != FIN) {
+		if (res->jeton.lexem == BAR_OUV)
+			i++;
+		else if (res->jeton.lexem == BAR_FERM) {
 			if (i == 0)
 				return res;
 			else

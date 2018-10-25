@@ -3,7 +3,7 @@
 
 typedef enum
 {
-    REEL,OPERATEUR,FONCTION,ERREUR,FIN,PAR_OUV,PAR_FERM,VARIABLE,BAR_OUV,BAR_FERM,ASBOLU
+    REEL,OPERATEUR,FONCTION,ERREUR,FIN,PAR_OUV,PAR_FERM,VARIABLE,BAR_OUV,BAR_FERM,ABSOLU
 } typelexem;
 
 typedef enum
@@ -18,7 +18,7 @@ typedef enum
 
 typedef enum
 {
-    ERR1,ERR2,ERR3,etc // /!\ D�finir les diff�rents type d'erreurs
+    TOO_MANY_OPERATOR, ERR2, ERR3,etc // /!\ D�finir les diff�rents type d'erreurs
 } typeerreur;
 
 typedef union
