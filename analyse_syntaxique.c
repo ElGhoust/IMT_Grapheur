@@ -79,7 +79,7 @@ Arbre findError(ListeEntite l) {
         //Trop d'opérateur qui se suivent
         if(l->jeton.lexem == OPERATEUR && l->suiv->jeton.lexem == OPERATEUR) {
             a = (Arbre)malloc(sizeof(struct Node));
-            a->jeton.lexem = ERR;
+            a->jeton.lexem = ERREUR;
             a->jeton.valeur.erreur = TOO_MANY_OPERATOR;
             return a;
         }
