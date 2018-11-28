@@ -1,6 +1,5 @@
 #ifndef ANALYSE_LEXICALE_H_INCLUDED
 #define ANALYSE_LEXICALE_H_INCLUDED
-
 #include "jeton.h"
 
 typedef struct Entite
@@ -11,5 +10,8 @@ typedef struct Entite
 typedef Entite * ListeEntite;
 
 void analyseLexicale(char * input);
+ListeEntite initListe();
+ListeEntite ajoutFin(ListeEntite origine,typejeton jeton);
+void afficherListe(ListeEntite liste);
 
 #endif // ANALYSE_LEXICALE_H_INCLUDED
