@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="IMT Grapheur" />
+		<Option title="Grapheur" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/IMT Grapheur" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/Grapheur" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -16,7 +16,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/IMT Grapheur" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/Grapheur" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -31,26 +31,29 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="freeglut" />
+			<Add library="freeglut_static" />
+			<Add library="opengl32" />
+			<Add library="glu32" />
+		</Linker>
 		<Unit filename="analyse_lexicale.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="analyse_lexicale.h" />
-		<Unit filename="analyse_syntaxique.c">
+		<Unit filename="func_graphique.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="analyse_syntaxique.h" />
-		<Unit filename="evaluateur.c">
+		<Unit filename="func_graphique.h" />
+		<Unit filename="graph.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="evaluateur.h" />
-		<Unit filename="graphics.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="graphics.h" />
+		<Unit filename="graph.h" />
 		<Unit filename="jeton.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="variables.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

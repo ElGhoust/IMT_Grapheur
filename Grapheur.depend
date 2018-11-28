@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1543445397 source:d:\documents\projets en c\grapheur\main.c
+	"func_graphique.h"
+	"analyse_lexicale.h"
+	"graph.h"
+	"variables.h"
+
+1543354243 source:d:\documents\projets en c\grapheur\graph.c
+	<GL/glut.h>
+	"graph.h"
+
+1543353089 d:\documents\projets en c\grapheur\func_graphique.h
+
+1542989755 d:\documents\projets en c\grapheur\graph.h
+	<GL/gl.h>
+	<GL/glut.h>
+	"string.h"
+	"stdio.h"
+	<malloc.h>
+	<math.h>
+
+1543436343 source:d:\documents\projets en c\grapheur\func_graphique.c
+	<GL/glut.h>
+	"func_graphique.h"
+	"graph.h"
+	"variables.h"
+
+1543269912 d:\documents\projets en c\grapheur\variables.h
+
+1543445463 source:d:\documents\projets en c\grapheur\analyse_lexicale.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"jeton.h"
+	"analyse_lexicale.h"
+
+1543438878 d:\documents\projets en c\grapheur\jeton.h
+
+1543445348 d:\documents\projets en c\grapheur\analyse_lexicale.h
+	"jeton.h"
+
