@@ -18,7 +18,7 @@ typedef enum
 
 typedef enum
 {
-    TOO_MANY_OPERATOR, ERR2, ERR3,etc // /!\ D�finir les diff�rents type d'erreurs
+	  NO_ERR, PRIORITY_MISMATCH, LEXICAL_ERR, UNPARSEABLE_SEQUENCE_REEL, UNPARSEABLE_SEQUENCE_OPERATEUR, UNPARSEABLE_SEQUENCE_FONCTION, UNPARSEABLE_SEQUENCE_OTHER
 } typeerreur;
 
 typedef union
