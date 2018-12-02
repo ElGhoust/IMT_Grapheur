@@ -25,12 +25,8 @@ ListeEntite priorite(ListeEntite liste, int priorite) {
 	ListeEntite res = liste;
 
 	while (res != NULL && res->jeton.lexem != FIN && !found) {
-		if (priorite != 4 && (res->jeton.lexem == PAR_OUV || res->jeton.lexem == BAR_OUV || res->jeton.lexem == ABSOLU)) {
-			typejeton j;
-			j.lexem = getClosingTag(res->jeton.lexem);
-			res = getLastJeton(res, j);
-			res = res->suiv;
-		}
+		if (priorite != 4 && (res->jeton.lexem == PAR_OUV || res->jeton.lexem == BAR_OUV || res->jeton.lexem == ABSOLU))
+			res = getClosingTagListe(res);
 
 		switch (priorite) {
 		case 1:
@@ -132,7 +128,7 @@ Arbre analyse_syntaxique(ListeEntite liste) {
 					ListeEntite start = e3->suiv, end = NULL;
 					typejeton j;
 					j.lexem = getClosingTag(start->jeton.lexem);
-					end = getLastJeton(start, j);
+					end = getClosingTagListe(start);
 
 					end->jeton.lexem = FIN;
 
@@ -164,7 +160,7 @@ Arbre analyse_syntaxique(ListeEntite liste) {
 						ListeEntite start = e4, end = NULL;
 						typejeton j;
 						j.lexem = getClosingTag(start->jeton.lexem);
-						end = getLastJeton(start, j);
+						end = getClosingTagListe(start);
 
 						end->jeton.lexem = FIN;
 
@@ -313,6 +309,9 @@ void jeton_to_character(typejeton j) {
 		case SINC:
 			printf("sinc");
 			break;
+		default:
+			printf("?");
+			break;
 		}
 		break;
 	case ERREUR:
@@ -338,6 +337,9 @@ void jeton_to_character(typejeton j) {
 		break;
 	case ABSOLU:
 		printf("|");
+		break;
+	default:
+		printf("?");
 		break;
 	}
 }
@@ -480,6 +482,8 @@ typeerreur hasBadLexemSequence(ListeEntite l) {
 			if (suiv->jeton.lexem == REEL || suiv->jeton.lexem == FONCTION || suiv->jeton.lexem == PAR_OUV || suiv->jeton.lexem == BAR_OUV || suiv->jeton.lexem == VARIABLE)
 				return UNPARSEABLE_SEQUENCE_OTHER;
 			break;
+		default:
+			break;
 		}
 
 		l = l->suiv;
@@ -528,18 +532,9 @@ int hasPriorityMismatch(ListeEntite l) {
 		}
 		else if (lexem == ABSOLU || lexem == BAR_OUV || lexem == PAR_OUV) {
 			ListeEntite begin = NULL, end = NULL;
-			if (lexem == ABSOLU) {
-				begin = l->suiv;
-				end = getLastJeton(l, j3);
-			}
-			else if (lexem == BAR_OUV) {
-				begin = l->suiv;
-				end = getLastJeton(l, j1);
-			}
-			else if (lexem == PAR_OUV) {
-				begin = l->suiv;
-				end = getLastJeton(l, j2);
-			}
+
+			begin = l->suiv;
+			end = getClosingTagListe(l);
 
 			if (end == NULL)
 				return 1;
@@ -632,6 +627,8 @@ void copyJeton(typejeton in, typejeton * out) {
 	case ERREUR:
 		out->valeur.erreur = in.valeur.erreur;
 		break;
+	default:
+		break;
 	}
 }
 
@@ -662,11 +659,11 @@ ListeEntite clean(ListeEntite l) {
 ListeEntite cleanSequencePlusMoins(ListeEntite l) {
 	ListeEntite start = l;
 	while (l != NULL && l->jeton.lexem != FIN) {
+		ListeEntite temp = l->suiv;
+		int taille = 1;
 		switch (l->jeton.lexem) {
 		case OPERATEUR:
 			// Fusion des suites de + et de -
-			ListeEntite temp = l->suiv;
-			int taille = 1;
 			while (temp->jeton.lexem == OPERATEUR) {
 				taille++;
 				temp = temp->suiv;
@@ -688,6 +685,8 @@ ListeEntite cleanSequencePlusMoins(ListeEntite l) {
 				l->jeton.valeur.operateur = merge;
 				l->suiv = temp;
 			}
+			break;
+		default:
 			break;
 		}
 		l = l->suiv;
@@ -725,11 +724,11 @@ ListeEntite cleanStartPlusMoins(ListeEntite l) {
 				typejeton j;
 				if (suiv->jeton.lexem == FONCTION) {
 					j.lexem = getClosingTag(suiv->suiv->jeton.lexem);
-					end = getLastJeton(suiv->suiv, j);
+					end = getClosingTagListe(suiv->suiv);
 				}
 				else {
 					j.lexem = getClosingTag(suiv->jeton.lexem);
-					end = getLastJeton(suiv, j);
+					end = getClosingTagListe(suiv);
 				}
 
 				if (end != NULL) {
@@ -754,7 +753,7 @@ ListeEntite cleanStartPlusMoins(ListeEntite l) {
 				ListeEntite last = NULL;
 				typejeton j;
 				j.lexem = getClosingTag(l2->jeton.lexem);
-				last = getLastJeton(l2, j);
+				last = getClosingTagListe(l2);
 
 				if (last != NULL) {
 					last->jeton.lexem = FIN;
@@ -781,7 +780,7 @@ ListeEntite cleanSequenceReelVariable(ListeEntite l) {
 	while (l != NULL && l->jeton.lexem != FIN) {
 		ListeEntite s = l->suiv;
 		if (l->jeton.lexem == REEL) {
-			if (s->jeton.lexem == VARIABLE || s->jeton.lexem == FONCTION || s->jeton.lexem == PAR_OUV || s->jeton.lexem == BAR_OUV || s->jeton.lexem == ABSOLU) {
+			if (s->jeton.lexem == VARIABLE || s->jeton.lexem == FONCTION || s->jeton.lexem == PAR_OUV || s->jeton.lexem == BAR_OUV) {
 				ListeEntite n = (ListeEntite)malloc(sizeof(Entite));
 				n->jeton.lexem = OPERATEUR;
 				n->jeton.valeur.operateur = FOIS;
@@ -790,7 +789,7 @@ ListeEntite cleanSequenceReelVariable(ListeEntite l) {
 			}
 		}
 		else if (l->jeton.lexem == VARIABLE) {
-			if (s->jeton.lexem == REEL || s->jeton.lexem == FONCTION || s->jeton.lexem == PAR_OUV || s->jeton.lexem == BAR_OUV || s->jeton.lexem == ABSOLU) {
+			if (s->jeton.lexem == REEL || s->jeton.lexem == FONCTION || s->jeton.lexem == PAR_OUV || s->jeton.lexem == BAR_OUV) {
 				ListeEntite n = (ListeEntite)malloc(sizeof(Entite));
 				n->jeton.lexem = OPERATEUR;
 				n->jeton.valeur.operateur = FOIS;
@@ -798,7 +797,7 @@ ListeEntite cleanSequenceReelVariable(ListeEntite l) {
 				l->suiv = n;
 			}
 		}
-		else if (l->jeton.lexem == PAR_OUV || l->jeton.lexem == PAR_FERM || l->jeton.lexem == ABSOLU) {
+		else if (l->jeton.lexem == BAR_FERM || l->jeton.lexem == PAR_FERM) {
 			if (s->jeton.lexem == VARIABLE || s->jeton.lexem == REEL || s->jeton.lexem == FONCTION || s->jeton.lexem == PAR_OUV || s->jeton.lexem == BAR_OUV || s->jeton.lexem == ABSOLU) {
 				ListeEntite n = (ListeEntite)malloc(sizeof(Entite));
 				n->jeton.lexem = OPERATEUR;
@@ -853,4 +852,59 @@ typelexem getClosingTag(typelexem l) {
 	default:
 		return ERREUR;
 	}
+}
+
+/*
+ * Retourne un pointeur vers le jeton fermant
+ * Ex : (x+3)*x => )*x
+ *
+ * @pre Suppose que le premier jeton de la liste donnée est l'ouverture ( [ |
+ *
+ * @params ListeEntite l
+ *
+ * @return ListeEntite
+ */
+ListeEntite getClosingTagListe(ListeEntite l) {
+	typejeton opening, closing;
+	opening.lexem = l->jeton.lexem;
+	closing.lexem = getClosingTag(opening.lexem);
+	int count = 0;
+
+	if (opening.lexem != ABSOLU) {
+		while (l != NULL && l->jeton.lexem != FIN) {
+			if (jetonCompare(l->jeton, opening))
+				count++;
+			else if (jetonCompare(l->jeton, closing))
+				count--;
+
+			if (count == 0)
+				return l;
+
+			l = l->suiv;
+		}
+	}
+	else {
+		count = 1;
+		l = l->suiv;
+		if (l->jeton.lexem == ABSOLU)
+			return l;
+
+		while (l != NULL && l->jeton.lexem != FIN) {
+			ListeEntite suiv = l->suiv;
+			if (suiv != NULL && suiv->jeton.lexem == ABSOLU) {
+				typelexem lex = l->jeton.lexem;
+				if (lex == OPERATEUR || lex == FONCTION || lex == PAR_OUV || lex == BAR_OUV)
+					count++;
+				else
+					count--;
+
+				if (count == 0)
+					return suiv;
+			}
+
+			l = l->suiv;
+		}
+	}
+
+	return NULL;
 }

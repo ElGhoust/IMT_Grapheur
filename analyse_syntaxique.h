@@ -7,7 +7,6 @@
 ListeEntite priorite(ListeEntite liste, int priorite);
 Arbre getSyntaxeFromLexique(ListeEntite liste);
 Arbre analyse_syntaxique(ListeEntite);
-ListeEntite trouver_fermeture_parenthese(ListeEntite e);
 void afficher_arbre(Arbre a, int space);
 void afficher_liste(ListeEntite liste);
 void jeton_to_character(typejeton j);
@@ -27,5 +26,7 @@ ListeEntite cleanStartPlusMoins(ListeEntite l);
 ListeEntite cleanSequenceReelVariable(ListeEntite l);
 typeoperateur mergePlusMoins(ListeEntite l);
 typelexem getClosingTag(typelexem l);
+
+ListeEntite getClosingTagListe(ListeEntite l);
 
 #endif // ANALYSE_SYNTAXIQUE_H_INCLUDED
