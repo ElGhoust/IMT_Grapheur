@@ -533,8 +533,8 @@ int hasPriorityMismatch(ListeEntite l) {
 		else if (lexem == ABSOLU || lexem == BAR_OUV || lexem == PAR_OUV) {
 			ListeEntite begin = NULL, end = NULL;
 
-			begin = l->suiv;
 			end = getClosingTagListe(l);
+			begin = l->suiv;
 
 			if (end == NULL)
 				return 1;
