@@ -9,7 +9,7 @@ typedef struct Entite
 } Entite;
 typedef Entite *ListeEntite;
 
-/* Fonction principal de l'analyse lexicale */
+/* Fonction principale de l'analyse lexicale */
 ListeEntite analyseLexicale(char * input);
 
 ListeEntite initListe();

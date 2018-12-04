@@ -41,6 +41,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="analyse_lexicale.h" />
+		<Unit filename="analyse_syntaxique.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="analyse_syntaxique.h" />
+		<Unit filename="evaluateur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="evaluateur.h" />
 		<Unit filename="func_graphique.c">
 			<Option compilerVar="CC" />
 		</Unit>

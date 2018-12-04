@@ -12,9 +12,8 @@ ListeEntite analyseLexicale(char *input)
 
     if(input != NULL)
     {
-        int len = strlen(input);
         liste = initListe();
-        for(int i = 0; i<len; i++)
+        for(int i = 0; i < strlen(input); i++)
         {
             typejeton temp;
             if (isdigit(input[i]))
@@ -125,7 +124,7 @@ ListeEntite analyseLexicale(char *input)
                             i=i+2;
                         }
                         else{
-                        printf("iiii\n");
+                        printf("Caractere inconnu\n");
                         }
                         break;
                 }

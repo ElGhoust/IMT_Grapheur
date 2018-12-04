@@ -6,23 +6,23 @@
 
 extern float borneMoins;
 extern float bornePlus;
+extern float pasAffichage;
 extern float pas;
+extern ptrMaillon valeurs;
 
-/**
-* Fonction custom pour redésinner la fenêtre
-**/
-
-
+/** Fonction principale de la partie graphique tournant en boucle.
+ *  Elle regroupe la plupart des autres fonctions decrites dans ce fichier.
+ */
 void display()
 {
     // clear window
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Background en blanc et axes en noirs
-    creationGraphique();
+    creationAxes();
 
-    /// Création de la scène ici
-    for(float i = borneMoins; i < bornePlus; i=i+pas)
+    /// Creation de la scene ici
+    for(float i = borneMoins; i < bornePlus; i=i+pasAffichage)
     {
         if (i != 0.0f)
         {
@@ -32,12 +32,17 @@ void display()
         }
     }
 
+    // Dessine une fonction
+    setcolor(1.0F, 0.0F, 0.0F);
+    drawFunc(valeurs);
+
     // flush drawing routines to the window
     glFlush();
 }
 
-
-void creationGraphique()
+/** Permet de créer les axes des abscisses et des ordonnées
+ */
+void creationAxes()
 {
     setcolor(1.0F, 1.0F, 1.0F);
     bar(-1.0F, -1.0F, 1.0F, 1.0F);
@@ -47,8 +52,21 @@ void creationGraphique()
     line(0.0F, -1.0F, 0.0F, 1.0F); // ordonnee
 }
 
+/** Dessine la fonction sur le graphique
+ */
+void drawFunc(ptrMaillon valeurs)
+{
+    beginlines(valeurs->x/5, valeurs->y/5);
+    while (valeurs->suivant != NULL)
+    {
+        lineto(valeurs->x/5, valeurs->y/5);
+        valeurs = valeurs->suivant;
+    }
+    finishlines();
+}
+
 void MouseButton(int button,int state,int x, int y)
 {
-
+    // TODO
 }
 
