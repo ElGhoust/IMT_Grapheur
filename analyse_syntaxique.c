@@ -7,9 +7,8 @@
 
 /*
  * Retourne le première occurence dans la liste chainée de la priorité choisie
- * 0: moins / plus
- * 1: fois/div
- * 2: puissance
+ * 1: moins / plus
+ * 2: fois / div
  * 3: fonction
  * 4: parenthèses, crochets, absolu
  * 5: Reel / Variable
@@ -765,7 +764,6 @@ ListeEntite cleanStartPlusMoins(ListeEntite l) {
 					closing->suiv = end->suiv;
 					end->suiv = closing;
 				}
-
 			}
 		}
 	}
@@ -783,6 +781,9 @@ ListeEntite cleanStartPlusMoins(ListeEntite l) {
 					l2->suiv = cleanStartPlusMoins(l2->suiv);
 					last->jeton.lexem = j.lexem;
 				}
+			}
+			else if (l2->jeton.lexem == OPERATEUR && (l2->jeton.valeur.operateur == FOIS || l2->jeton.valeur.operateur == DIV)) {
+				l2->suiv = cleanStartPlusMoins(l2->suiv);
 			}
 			l2 = l2->suiv;
 		}
