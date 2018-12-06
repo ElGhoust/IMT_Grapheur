@@ -522,7 +522,7 @@ typeerreur hasBadLexemSequence(ListeEntite l) {
 int hasPriorityMismatch(ListeEntite l) {
 	ListeEntite start = l;
 	while (l != NULL && l->jeton.lexem != FIN) {
-		typejeton j1, j2;
+		typejeton j1, j2, j3;
 
 		j1.lexem = PAR_OUV;
 		j2.lexem = PAR_FERM;
@@ -540,6 +540,10 @@ int hasPriorityMismatch(ListeEntite l) {
 		if (countJeton(l, j1) % 2 != 0) {
 			return 1;
 		}
+
+		j1.lexem = BAR_FERM;
+		j2.lexem = PAR_FERM;
+		j3.lexem = ABSOLU;
 
 		typelexem lexem = l->jeton.lexem;
 		if (lexem == BAR_FERM || lexem == PAR_FERM) {
@@ -924,12 +928,6 @@ ListeEntite getClosingTagListe(ListeEntite l) {
 	return NULL;
 }
 
-/*
- * Détruit l'arbre et retourne NULL
- *
- * @params Arbre a
- * @return Arbre NULL
- */
 Arbre detruireArbre(Arbre a) {
 	if (a != NULL) {
 		detruireArbre(a->fg);
