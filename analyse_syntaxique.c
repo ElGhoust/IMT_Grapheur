@@ -7,8 +7,9 @@
 
 /*
  * Retourne le première occurence dans la liste chainée de la priorité choisie
- * 1: moins / plus
- * 2: fois / div
+ * 0: moins / plus
+ * 1: fois / div
+ * 2: puisssance
  * 3: fonction
  * 4: parenthèses, crochets, absolu
  * 5: Reel / Variable
@@ -817,7 +818,7 @@ ListeEntite cleanSequenceReelVariable(ListeEntite l) {
 			}
 		}
 		else if (l->jeton.lexem == BAR_FERM || l->jeton.lexem == PAR_FERM) {
-			if (s->jeton.lexem == VARIABLE || s->jeton.lexem == REEL || s->jeton.lexem == FONCTION || s->jeton.lexem == PAR_OUV || s->jeton.lexem == BAR_OUV || s->jeton.lexem == ABSOLU) {
+			if (s->jeton.lexem == VARIABLE || s->jeton.lexem == REEL || s->jeton.lexem == FONCTION || s->jeton.lexem == PAR_OUV || s->jeton.lexem == BAR_OUV) {
 				ListeEntite n = (ListeEntite)malloc(sizeof(Entite));
 				n->jeton.lexem = OPERATEUR;
 				n->jeton.valeur.operateur = FOIS;
