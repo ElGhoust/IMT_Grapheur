@@ -7,8 +7,9 @@
 
 /*
  * Retourne le première occurence dans la liste chainée de la priorité choisie
- * 1: moins / plus
- * 2: fois / div
+ * 0: moins / plus
+ * 1: fois/div
+ * 2: puissance
  * 3: fonction
  * 4: parenthèses, crochets, absolu
  * 5: Reel / Variable
@@ -683,27 +684,30 @@ ListeEntite cleanSequencePlusMoins(ListeEntite l) {
 		switch (l->jeton.lexem) {
 		case OPERATEUR:
 			// Fusion des suites de + et de -
-			while (temp->jeton.lexem == OPERATEUR && (temp->jeton.valeur.operateur == MOINS || temp->jeton.valeur.operateur == PLUS)) {
-				taille++;
-				temp = temp->suiv;
-			}
-			if (taille != 1) {
-				typejeton copy;
-				copyJeton(temp->jeton, &copy);
-				temp->jeton.lexem = FIN;
-				typeoperateur merge = mergePlusMoins(l);
-
-				ListeEntite suiv = l->suiv, tmp = NULL;
-				while (suiv->jeton.lexem != FIN) {
-					tmp = suiv;
-					suiv = suiv->suiv;
-					free(tmp);
+			if (l->jeton.valeur.operateur == MOINS || l->jeton.valeur.operateur == PLUS) {
+				while (temp->jeton.lexem == OPERATEUR && (temp->jeton.valeur.operateur == MOINS || temp->jeton.valeur.operateur == PLUS)) {
+					taille++;
+					temp = temp->suiv;
 				}
+				if (taille != 1) {
+					typejeton copy;
+					copyJeton(temp->jeton, &copy);
+					temp->jeton.lexem = FIN;
+					typeoperateur merge = mergePlusMoins(l);
 
-				copyJeton(copy, &(temp->jeton));
-				l->jeton.valeur.operateur = merge;
-				l->suiv = temp;
+					ListeEntite suiv = l->suiv, tmp = NULL;
+					while (suiv->jeton.lexem != FIN) {
+						tmp = suiv;
+						suiv = suiv->suiv;
+						free(tmp);
+					}
+
+					copyJeton(copy, &(temp->jeton));
+					l->jeton.valeur.operateur = merge;
+					l->suiv = temp;
+				}
 			}
+
 			break;
 		default:
 			break;
