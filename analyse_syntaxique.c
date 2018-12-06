@@ -7,9 +7,8 @@
 
 /*
  * Retourne le première occurence dans la liste chainée de la priorité choisie
- * 0: moins / plus
- * 1: fois / div
- * 2: puisssance
+ * 1: moins / plus
+ * 2: fois / div
  * 3: fonction
  * 4: parenthèses, crochets, absolu
  * 5: Reel / Variable
@@ -684,7 +683,7 @@ ListeEntite cleanSequencePlusMoins(ListeEntite l) {
 		switch (l->jeton.lexem) {
 		case OPERATEUR:
 			// Fusion des suites de + et de -
-			while (temp->jeton.lexem == OPERATEUR) {
+			while (temp->jeton.lexem == OPERATEUR && (temp->jeton.valeur.operateur == MOINS || temp->jeton.valeur.operateur == PLUS)) {
 				taille++;
 				temp = temp->suiv;
 			}
