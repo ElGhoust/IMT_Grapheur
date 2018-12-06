@@ -20,6 +20,13 @@ ListeEntite analyseLexicale(char *input)
             {
                 temp.lexem=REEL;
                 temp.valeur.reel=atof(&input[i]);
+                // On continue de lire la chaine tant que le prochain caractere est un chiffre ou une virgule
+                while((isdigit(input[i+1]))||(input[i+1] == '.')){
+                    if(input[i+1] == '.'){
+                        printf("C'est un float\n");
+                    }
+                    i++;
+                }
                 liste = ajoutFin(liste, temp);
                 if(atof(&input[i]) > 9)
                 {
