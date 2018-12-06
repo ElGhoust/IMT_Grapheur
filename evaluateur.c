@@ -143,6 +143,9 @@ float operation(Arbre a, float x) {
                 case DIV:
                     return operation(a->fg, x) / operation(a->fd, x);
                     break;
+                case PUIS:
+                    return pow(operation(a->fg, x), operation(a->fd, x));
+                    break;
                 default:
                     break;
             }
