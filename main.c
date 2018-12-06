@@ -5,18 +5,20 @@
 #include "graph.h"
 #include "variables.h"
 
+//|3x+|8-3x||+sin|7-3x|
+
 /***************************************
 *          VARIABLES GLOBALES          *
 ****************************************/
 
 /* Borne - de l'axe des abscisses */
-float borneMoins = -10.0F;
+float borneMoins = -15.0F;
 
 /* Borne + de l'axe des abscisses */
-float bornePlus = 10.0F;
+float bornePlus = 5.0F;
 
-/* Affichage du quadrillage tous les pas d'affichage */
-float pasAffichage = 1.0F;
+/* Affichage du quadrilage tous les pas d'affichage */
+float scale = 1.0F;
 
 /* TODO */
 float pas = 0.1F;
@@ -42,12 +44,11 @@ int main ( int argc, char * argv[] )
     scanf("%s", fonction);
 
     listeEntite = analyseLexicale(fonction);
-    afficherListe(listeEntite);
 
     arbre = getSyntaxeFromLexique(listeEntite);
     afficher_arbre(arbre, 0);
 
-    valeurs = calculIntervalle(arbre, -10.0F, 10.0F);
+    valeurs = calculIntervalle(arbre, borneMoins, bornePlus);
     afficher(valeurs);
 
     InitGraph(argc, argv, "Grapheur", 980, 640, display, NULL, MouseButton);

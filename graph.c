@@ -2,6 +2,10 @@
 #include <GL/glut.h>
 
 #include "graph.h"
+#include "variables.h"
+
+extern float borneMoins;
+extern float bornePlus;
 
 /**
 * @file Graph.cpp
@@ -69,7 +73,8 @@ static void Begin2DDisplay(void)
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-  glOrtho(-1,1,-1.0,1.0,0.5,1.5);
+  glOrtho(borneMoins,bornePlus,borneMoins,bornePlus,0.5,1.5);
+  //glOrtho(-1,1,-1.0,1.0,0.5,1.5);
 
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
@@ -91,7 +96,7 @@ static void InitDisplay(void)
   glDisable(GL_LIGHTING);
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
-  glClearColor(0.0F,0.0F,0.0F,0.0F);
+  glClearColor(1.0F,1.0F,1.0F,1.0F);
 }
 
 static void GlutDraw(void)

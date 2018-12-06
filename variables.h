@@ -2,6 +2,6 @@
 
 extern float borneMoins;
 extern float bornePlus;
-extern float pasAffichage;
+extern float scale;
 extern float pas;
 extern ptrMaillon valeurs;

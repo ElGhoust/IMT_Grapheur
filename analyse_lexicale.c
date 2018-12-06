@@ -58,6 +58,10 @@ ListeEntite analyseLexicale(char *input)
                         temp.lexem = PAR_FERM;
                         liste = ajoutFin(liste, temp);
                         break;
+                    case '|':
+                        temp.lexem = ABSOLU;
+                        liste = ajoutFin(liste, temp);
+                        break;
                     case '^':
                         temp.lexem = PUIS;
                         liste = ajoutFin(liste, temp);
@@ -71,7 +75,7 @@ ListeEntite analyseLexicale(char *input)
                         if(toupper(input[i])=='A'&&toupper(input[i+1])=='B'&&toupper(input[i+2])=='S')
                         {
                             temp.lexem = FONCTION;
-                            temp.valeur.fonction = ABS;
+                            temp.valeur.fonction = ABSOLU;
                             liste = ajoutFin(liste, temp);
                             i=i+2;
                         }
@@ -113,6 +117,13 @@ ListeEntite analyseLexicale(char *input)
                         {
                             temp.lexem = FONCTION;
                             temp.valeur.fonction = EXP;
+                            liste = ajoutFin(liste, temp);
+                            i=i+2;
+                        }
+                        else if (toupper(input[i])=='L'&&toupper(input[i+1])=='O'&&toupper(input[i+2])=='G')
+                        {
+                            temp.lexem = FONCTION;
+                            temp.valeur.fonction = LOG;
                             liste = ajoutFin(liste, temp);
                             i=i+2;
                         }

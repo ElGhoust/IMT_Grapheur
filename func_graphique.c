@@ -6,9 +6,14 @@
 
 extern float borneMoins;
 extern float bornePlus;
-extern float pasAffichage;
+extern float scale;
 extern float pas;
 extern ptrMaillon valeurs;
+
+/*
+float tmp;
+tmp = ((-bornePlus)+(-borneMoins))/(abs(bornePlus)+abs(borneMoins));
+*/
 
 /** Fonction principale de la partie graphique tournant en boucle.
  *  Elle regroupe la plupart des autres fonctions decrites dans ce fichier.
@@ -18,19 +23,12 @@ void display()
     // clear window
     glClear(GL_COLOR_BUFFER_BIT);
 
+    /// Creation de la scene ici
+    setcolor(0.85F, 0.85F, 0.85F); // noir
+    creationCadrillage();
+
     // Background en blanc et axes en noirs
     creationAxes();
-
-    /// Creation de la scene ici
-    for(float i = borneMoins; i < bornePlus; i=i+pasAffichage)
-    {
-        if (i != 0.0f)
-        {
-            setcolor(0.96F, 0.96F, 0.96F); // noir
-            line(i/5.0F, -1.0F, i/5.0F, 1.0F);
-            line(-1.0F, i/5.0F, 1.0F, i/5.0F);
-        }
-    }
 
     // Dessine une fonction
     setcolor(1.0F, 0.0F, 0.0F);
@@ -40,26 +38,36 @@ void display()
     glFlush();
 }
 
+void creationCadrillage()
+{
+    float i;
+    float nombreIntervalle = abs(borneMoins)+abs(bornePlus);
+    for(i = borneMoins; i < bornePlus; i+=scale)
+    {
+        line(i, borneMoins, i, bornePlus); // abscisse
+        line(borneMoins, i, bornePlus, i); // ordonnée
+    }
+}
+
 /** Permet de créer les axes des abscisses et des ordonnées
  */
 void creationAxes()
 {
-    setcolor(1.0F, 1.0F, 1.0F);
-    bar(-1.0F, -1.0F, 1.0F, 1.0F);
-
     setcolor(0.0F, 0.0F, 0.0F); // noir
-    line(-1.0F, 0.0F, 1.0F, 0.0F); // abscisse
-    line(0.0F, -1.0F, 0.0F, 1.0F); // ordonnee
+    line(borneMoins, 0.0F, bornePlus, 0.0F); // abscisse
+    line(0, borneMoins, 0, bornePlus); // ordonnee
 }
 
 /** Dessine la fonction sur le graphique
  */
 void drawFunc(ptrMaillon valeurs)
 {
-    beginlines(valeurs->x/5, valeurs->y/5);
+    float emplacementAxeY = ((-bornePlus)+(-borneMoins))/(abs(bornePlus)+abs(borneMoins));
+
+    beginlines(valeurs->x, valeurs->y);
     while (valeurs->suivant != NULL)
     {
-        lineto(valeurs->x/5, valeurs->y/5);
+        lineto(valeurs->x, valeurs->y);
         valeurs = valeurs->suivant;
     }
     finishlines();

@@ -7,6 +7,8 @@ void display();
 
 void creationAxes();
 
+void creationCadrillage();
+
 void drawFunc(ptrMaillon valeurs);
 
 void MouseButton(int button,int state,int x, int y);
