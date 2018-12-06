@@ -26,7 +26,7 @@ ListeEntite cleanStartPlusMoins(ListeEntite l);
 ListeEntite cleanSequenceReelVariable(ListeEntite l);
 typeoperateur mergePlusMoins(ListeEntite l);
 typelexem getClosingTag(typelexem l);
-
 ListeEntite getClosingTagListe(ListeEntite l);
+Arbre detruireArbre(Arbre a);
 
 #endif // ANALYSE_SYNTAXIQUE_H_INCLUDED

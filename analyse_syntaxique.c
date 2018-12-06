@@ -29,12 +29,16 @@ ListeEntite priorite(ListeEntite liste, int priorite) {
 			res = getClosingTagListe(res);
 
 		switch (priorite) {
-		case 1:
+		case 0:
 			if (res->jeton.lexem == OPERATEUR && (res->jeton.valeur.operateur == MOINS || res->jeton.valeur.operateur == PLUS))
 				found = 1;
 			break;
-		case 2:
+			break;
+		case 1:
 			if (res->jeton.lexem == OPERATEUR && (res->jeton.valeur.operateur == FOIS || res->jeton.valeur.operateur == DIV))
+				found = 1;
+		case 2:
+			if (res->jeton.lexem == OPERATEUR && res->jeton.valeur.operateur == PUIS)
 				found = 1;
 			break;
 		case 3:
@@ -94,70 +98,52 @@ Arbre analyse_syntaxique(ListeEntite liste) {
 	Arbre a = NULL;
 
 	if (liste != NULL) {
-		ListeEntite e1 = priorite(liste, 1);
+		ListeEntite e0 = priorite(liste, 0);
 		// Plus et moins
-		if (e1 != NULL && e1->jeton.lexem != FIN) {
-			typejeton mem = e1->jeton;
-			e1->jeton.lexem = FIN;
+		if (e0 != NULL && e0->jeton.lexem != FIN) {
+			typejeton mem = e0->jeton;
+			e0->jeton.lexem = FIN;
 			a = (Arbre)malloc(sizeof(struct Node));
 			a->jeton.lexem = OPERATEUR;
 			a->jeton.valeur.operateur = mem.valeur.operateur;
 			a->fg = analyse_syntaxique(liste);
-			a->fd = analyse_syntaxique(e1->suiv);
-			e1->jeton.lexem = OPERATEUR;
-			e1->jeton.valeur = mem.valeur;
+			a->fd = analyse_syntaxique(e0->suiv);
+			e0->jeton.lexem = OPERATEUR;
+			e0->jeton.valeur = mem.valeur;
 		}
 		else {
 			// Fois et div
-			ListeEntite e2 = priorite(liste, 2);
-			if (e2 != NULL && e2->jeton.lexem != FIN) {
-				typejeton mem = e2->jeton;
-				e2->jeton.lexem = FIN;
+			ListeEntite e1 = priorite(liste, 1);
+			if (e1 != NULL && e1->jeton.lexem != FIN) {
+				typejeton mem = e1->jeton;
+				e1->jeton.lexem = FIN;
 				a = (Arbre)malloc(sizeof(struct Node));
 				a->jeton.lexem = OPERATEUR;
 				a->jeton.valeur.operateur = mem.valeur.operateur;
 				a->fg = analyse_syntaxique(liste);
-				a->fd = analyse_syntaxique(e2->suiv);
-				e2->jeton.lexem = OPERATEUR;
-				e2->jeton.valeur = mem.valeur;
+				a->fd = analyse_syntaxique(e1->suiv);
+				e1->jeton.lexem = OPERATEUR;
+				e1->jeton.valeur = mem.valeur;
 			}
 			else {
-				// Fonction
-				ListeEntite e3 = priorite(liste, 3);
-				if (e3 != NULL && e3->jeton.lexem != FIN) {
-					ListeEntite start = e3->suiv, end = NULL;
-					typejeton j;
-					j.lexem = getClosingTag(start->jeton.lexem);
-					end = getClosingTagListe(start);
-
-					end->jeton.lexem = FIN;
-
-					if (j.lexem == ABSOLU) {
-						a = (Arbre)malloc(sizeof(struct Node));
-						a->jeton.lexem = FONCTION;
-						a->jeton.valeur.fonction = e3->jeton.valeur.fonction;
-						a->fg = (Arbre)malloc(sizeof(struct Node));
-						a->fg->jeton.lexem = FONCTION;
-						a->fg->jeton.valeur.fonction = ABS;
-						a->fd = NULL;
-						a->fg->fg = analyse_syntaxique(start->suiv);
-						a->fg->fd = NULL;
-					}
-					else {
-						a = (Arbre)malloc(sizeof(struct Node));
-						a->jeton.lexem = FONCTION;
-						a->jeton.valeur.fonction = e3->jeton.valeur.fonction;
-						a->fg = analyse_syntaxique(start->suiv);
-						a->fd = NULL;
-					}
-
-					end->jeton.lexem = j.lexem;
+				// Puissance
+				ListeEntite e2 = priorite(liste, 2);
+				if (e2 != NULL && e2->jeton.lexem != FIN) {
+					typejeton mem = e2->jeton;
+					e2->jeton.lexem = FIN;
+					a = (Arbre)malloc(sizeof(struct Node));
+					a->jeton.lexem = OPERATEUR;
+					a->jeton.valeur.operateur = mem.valeur.operateur;
+					a->fg = analyse_syntaxique(liste);
+					a->fd = analyse_syntaxique(e2->suiv);
+					e2->jeton.lexem = OPERATEUR;
+					e2->jeton.valeur.operateur = PUIS;
 				}
 				else {
-					// PAR, BAR et ABSOLUE
-					ListeEntite e4 = priorite(liste, 4);
-					if (e4 != NULL && e4->jeton.lexem != FIN) {
-						ListeEntite start = e4, end = NULL;
+					// Fonction
+					ListeEntite e3 = priorite(liste, 3);
+					if (e3 != NULL && e3->jeton.lexem != FIN) {
+						ListeEntite start = e3->suiv, end = NULL;
 						typejeton j;
 						j.lexem = getClosingTag(start->jeton.lexem);
 						end = getClosingTagListe(start);
@@ -167,25 +153,58 @@ Arbre analyse_syntaxique(ListeEntite liste) {
 						if (j.lexem == ABSOLU) {
 							a = (Arbre)malloc(sizeof(struct Node));
 							a->jeton.lexem = FONCTION;
-							a->jeton.valeur.fonction = ABS;
-							a->fg = analyse_syntaxique(start->suiv);
+							a->jeton.valeur.fonction = e3->jeton.valeur.fonction;
+							a->fg = (Arbre)malloc(sizeof(struct Node));
+							a->fg->jeton.lexem = FONCTION;
+							a->fg->jeton.valeur.fonction = ABS;
 							a->fd = NULL;
+							a->fg->fg = analyse_syntaxique(start->suiv);
+							a->fg->fd = NULL;
 						}
 						else {
-							a = analyse_syntaxique(start->suiv);
+							a = (Arbre)malloc(sizeof(struct Node));
+							a->jeton.lexem = FONCTION;
+							a->jeton.valeur.fonction = e3->jeton.valeur.fonction;
+							a->fg = analyse_syntaxique(start->suiv);
+							a->fd = NULL;
 						}
 
 						end->jeton.lexem = j.lexem;
 					}
 					else {
-						// REEL et Variable
-						ListeEntite e5 = priorite(liste, 5);
-						if (e5 != NULL && e5->jeton.lexem != FIN) {
-							a = (Arbre)malloc(sizeof(struct Node));
-							a->fg = NULL;
-							a->fd = NULL;
-							a->jeton.lexem = e5->jeton.lexem;
-							a->jeton.valeur = e5->jeton.valeur;
+						// PAR, BAR et ABSOLUE
+						ListeEntite e4 = priorite(liste, 4);
+						if (e4 != NULL && e4->jeton.lexem != FIN) {
+							ListeEntite start = e4, end = NULL;
+							typejeton j;
+							j.lexem = getClosingTag(start->jeton.lexem);
+							end = getClosingTagListe(start);
+
+							end->jeton.lexem = FIN;
+
+							if (j.lexem == ABSOLU) {
+								a = (Arbre)malloc(sizeof(struct Node));
+								a->jeton.lexem = FONCTION;
+								a->jeton.valeur.fonction = ABS;
+								a->fg = analyse_syntaxique(start->suiv);
+								a->fd = NULL;
+							}
+							else {
+								a = analyse_syntaxique(start->suiv);
+							}
+
+							end->jeton.lexem = j.lexem;
+						}
+						else {
+							// REEL et Variable
+							ListeEntite e5 = priorite(liste, 5);
+							if (e5 != NULL && e5->jeton.lexem != FIN) {
+								a = (Arbre)malloc(sizeof(struct Node));
+								a->fg = NULL;
+								a->fd = NULL;
+								a->jeton.lexem = e5->jeton.lexem;
+								a->jeton.valeur = e5->jeton.valeur;
+							}
 						}
 					}
 				}
@@ -503,7 +522,7 @@ typeerreur hasBadLexemSequence(ListeEntite l) {
 int hasPriorityMismatch(ListeEntite l) {
 	ListeEntite start = l;
 	while (l != NULL && l->jeton.lexem != FIN) {
-		typejeton j1, j2, j3;
+		typejeton j1, j2;
 
 		j1.lexem = PAR_OUV;
 		j2.lexem = PAR_FERM;
@@ -521,10 +540,6 @@ int hasPriorityMismatch(ListeEntite l) {
 		if (countJeton(l, j1) % 2 != 0) {
 			return 1;
 		}
-
-		j1.lexem = BAR_FERM;
-		j2.lexem = PAR_FERM;
-		j3.lexem = ABSOLU;
 
 		typelexem lexem = l->jeton.lexem;
 		if (lexem == BAR_FERM || lexem == PAR_FERM) {
@@ -906,5 +921,20 @@ ListeEntite getClosingTagListe(ListeEntite l) {
 		}
 	}
 
+	return NULL;
+}
+
+/*
+ * Détruit l'arbre et retourne NULL
+ *
+ * @params Arbre a
+ * @return Arbre NULL
+ */
+Arbre detruireArbre(Arbre a) {
+	if (a != NULL) {
+		detruireArbre(a->fg);
+		detruireArbre(a->fd);
+		free(a);
+	}
 	return NULL;
 }
