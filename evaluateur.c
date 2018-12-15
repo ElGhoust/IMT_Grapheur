@@ -7,6 +7,9 @@
 #include "evaluateur.h"
 #include "jeton.h"
 
+/**
+ * Permet de savoir si l'arbre passe en parametre est vide ou non, utile pour la fonction operation
+ */
 int est_vide(Arbre a) {
     int vide = 0;
     if(a == NULL)
@@ -15,10 +18,8 @@ int est_vide(Arbre a) {
 }
 
 /**
-Fonction test de la lecture de l'arbre
-
-Affiche le contenu de l'arbre
-**/
+ * Permet d'afficher dans la console la fonction contenue dans l'arbre passe en parametre
+ */
 void analyse_arbre(Arbre a) {
     if(est_vide(a))
         printf("Vide");
@@ -121,6 +122,13 @@ void analyse_arbre(Arbre a) {
     }
 }
 
+/**
+ * Fonction principale de la partie evaluateur, effectue l'operation a partir de l'arbre passe en parametre
+ * Cette fonction repose en grande partie sur la recursivite pour lire au mieux l'arbre fournit
+ * Le fils gauche est prioritaire au fils droit, notamment pour les fonctions n'utilisant qu'un seul parametre telles
+ * que COS, SIN, LOG,... le fils gauche est le seul a contenir une valeur. De meme, pour les operations arithmetiques
+ * simple c'est le fils gauche qui est lu en premier puis le fils droit.
+ */
 float operation(Arbre a, float x) {
     if(a == NULL) {
         return 0;
@@ -209,7 +217,10 @@ float operation(Arbre a, float x) {
     return 0;
 }
 
-
+/**
+ * Permet d'effectuer le calcul d'une intervalle de la valeur X jusqu'a la valeur Y sur l'arbre d'operation passe en parametre.
+ * Le tout renvoie une liste chainee comportant la valeur testee et le resultat obtenu pour chaque index.
+ */
 ptrMaillon calculIntervalle(Arbre a, float x, float y) {
     ptrMaillon valeurs;
     float i;
@@ -224,10 +235,16 @@ ptrMaillon calculIntervalle(Arbre a, float x, float y) {
     return valeurs;
 }
 
+/**
+ * Cree une liste chainee vide
+ */
 void creer_liste_chainee(ptrMaillon *pL) {
     *pL = NULL;
 }
 
+/**
+ * Cree un maillon avec en parametre un index et sa valeur asssociee
+ */
 ptrMaillon creationNoeud(float x, float y) {
     ptrMaillon nouveau = malloc(sizeof(struct maillon));
     nouveau->x = x;
@@ -236,6 +253,9 @@ ptrMaillon creationNoeud(float x, float y) {
     return nouveau;
 }
 
+/**
+ * Permet d'inserer dans une liste chainee un index et sa valeur associee
+ */
 void inserer(ptrMaillon *pL, float x, float y) {
     ptrMaillon nouveau = creationNoeud(x, y);
     if(*pL == NULL)
@@ -253,6 +273,9 @@ void inserer(ptrMaillon *pL, float x, float y) {
     }
 }
 
+/**
+ * Permet d'afficher une liste chainee.
+ */
 void afficher(ptrMaillon pL) {
     ptrMaillon parcours = pL;
     if(pL == NULL) { printf("La liste est vide !\n\n"); }
